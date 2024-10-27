@@ -1,0 +1,48 @@
+version: 0.1
+component: build
+timeoutInSeconds: 6000
+runAs: root
+shell: bash
+env:
+  exportedVariables:
+    - BUILDRUN_HASH
+steps:
+  - type: Command
+    name: "Assign variables"
+    timeoutInSeconds: 10
+    command: |
+      echo Path is
+      echo $PATH
+      cd ${OCI_PRIMARY_SOURCE_DIR}
+      ls
+      echo Extracting export variables - Working in `pwd`
+      cd ${OCI_PRIMARY_SOURCE_DIR}            
+      export BUILDRUN_HASH=`echo ${OCI_BUILD_RUN_ID} | rev | cut -c 1-7`
+      export BUILDRUN_HASH=`date '+%Y%m%d%H%M%S'`_${BUILDRUN_HASH}
+      echo "BUILDRUN_HASH: " $BUILDRUN_HASH
+    onFailure:
+      - type: Command
+        timeoutInSeconds: 40
+        command: |
+          echo "Handling Failure"
+          echo "Failure successfully handled"
+        timeoutInSeconds: 400
+        runAs: root 
+  - type: Command
+    name: "Build docker image"
+    command: |      
+      cd ${OCI_PRIMARY_SOURCE_DIR}
+      echo Running docker update - Working in `pwd`
+      docker build  --tag hello_python:latest --file Dockerfile . 
+      echo images are
+      docker images      
+outputArtifacts:
+  - name: hello_python_image_latest
+    type: DOCKER_IMAGE
+    location: hello_python:latest
+  - name: hello_python_image_version
+    type: DOCKER_IMAGE
+    location: hello_python:latest
+  - name: deployment_yaml
+    type: BINARY
+    location: ${OCI_PRIMARY_SOURCE_DIR}/yaml/app.yaml
