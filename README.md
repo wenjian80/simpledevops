@@ -18,7 +18,21 @@ git commit -m "commit"
 git push origin main
 ```
 
-After deploy hit
+After deploy hit the below to get the service load balancer ip
 
-curl http://[ip]:31112/
+The below command will show the load balancer ip as the external ip
+
+```
+kubectl get services
+
+kubectl get services
+NAME           TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)             AGE
+helloworldpy   LoadBalancer   10.96.89.168   xx.xx.xx.xxx   80:30915/TCP        7m43s
+kubernetes     ClusterIP      10.96.0.1      <none>           443/TCP,12250/TCP   16h
+
+```
+
+And then hit the services
+```
+http://EXTERNAL-IP/
 ```
