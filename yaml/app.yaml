@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: helloworldpy
-        image: phx.ocir.io/xxx/simpledevops/hello_python:${BUILDRUN_HASH}
+        image: xxx.ocir.io/xxx/simpledevops/hello_python:${BUILDRUN_HASH}
         imagePullPolicy: IfNotPresent        
         ports:
         - containerPort: 5000
