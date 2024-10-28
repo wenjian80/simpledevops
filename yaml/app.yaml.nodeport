@@ -5,16 +5,13 @@ metadata:
   labels:
     app: helloworldpy
 spec:
-#  type: ClusterIP
-#  type: NodePort
-  type: LoadBalancer  
+  ports:
+  - nodePort: 31112
+    port: 5000
+    targetPort: 5000  
   selector:
     app: helloworldpy
-  ports:
-  - protocol: "TCP"
-    port: 80
-    targetPort: 5000
-#    nodePort: 30101
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
