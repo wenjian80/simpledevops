@@ -17,3 +17,8 @@ git add -A
 git commit -m "commit"
 git push origin main
 ```
+
+After deploy hit
+
+curl http://[ip]:31112/
+```
